@@ -47,6 +47,12 @@ export default {
           image: "shrimp_with_vermicelli.jpg",
           url: "https://food.mthai.com/food-recipe/125476.html",
           lang: "th"
+        },
+        {
+          name: "Buttermilk Roast Chicken",
+          image: "",
+          url:
+            "https://www.saltfatacidheat.com/buttermilkmarinated-roast-chicken/"
         }
       ]
     };
@@ -54,13 +60,18 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+h1 {
+  margin: 48px 0 40px;
+}
+
 .recipes {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   max-width: 1080px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 </style>
 

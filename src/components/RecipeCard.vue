@@ -1,7 +1,7 @@
 <template>
   <a class="recipe-card" :href="url" :data-lang="lang">
     <div class="shine"></div>
-    <div class="image" :style="{ backgroundImage: `url('` + require(`@/assets/${image}`) + `')` }"></div>
+    <div class="image" :style="{ backgroundImage: imageUrl }"></div>
     <h1>{{ name }}</h1>
   </a>
 </template>
@@ -21,6 +21,15 @@ export default {
       top: 0,
       offsetFactor: 6
     };
+  },
+  computed: {
+    imageUrl() {
+      if (this.image) {
+        return `url('` + require(`@/assets/${this.image}`) + `')`;
+      } else {
+        return `url('` + require(`@/assets/placeholder.png`) + `')`;
+      }
+    }
   },
   methods: {
     mouseMoveHandler: function(e) {
@@ -77,9 +86,9 @@ export default {
 .recipe-card {
   position: relative;
   overflow: hidden;
-  flex: 1 0 300px;
+  flex: 1 1 33.333%;
   max-width: 300px;
-  margin: 20px;
+  margin: 0 20px 40px;
   border-radius: 6px;
   background: #f9f9f9;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
@@ -88,6 +97,11 @@ export default {
   cursor: pointer;
   text-decoration: none;
   color: #2c3e50;
+
+  @media screen and (max-width: 600px) {
+    flex-basis: 100%;
+    margin: 0 auto 40px;
+  }
 
   .shine {
     position: absolute;
@@ -102,6 +116,7 @@ export default {
   .image {
     width: 100%;
     height: 160px;
+    background-color: #f2f2f2;
     background-size: cover;
     background-position: center;
   }
