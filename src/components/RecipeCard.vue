@@ -25,7 +25,7 @@ export default {
       elem: null,
       left: 0,
       top: 0,
-      offsetFactor: 10
+      offsetFactor: 8
     };
   },
   computed: {
@@ -86,7 +86,7 @@ export default {
   background: #ffffff;
   text-decoration: none;
   text-align: left;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
   backface-visibility: hidden;
   transform-style: preserve-3d;
   transition: transform 400ms;
@@ -100,6 +100,7 @@ export default {
   @media screen and (max-width: 696px) {
     flex: 0 1 100%;
     max-width: 360px;
+    margin: 0 auto 32px;
   }
 
   @media screen and (max-width: 392px) {
@@ -131,7 +132,6 @@ export default {
   }
 
   .tag {
-    box-sizing: border-box;
     display: inline-block;
     padding: 4px 8px;
     background: #f2f2f2;

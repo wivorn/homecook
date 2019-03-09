@@ -1,6 +1,5 @@
 <template>
-  <div class="home">
-    <h1>Home<span>Cook</span></h1>
+  <div class="page">
     <div class="recipes">
       <RecipeCard
         v-for="recipe in recipes"
@@ -78,15 +77,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-h1 {
-  margin: 48px 0 40px;
-  letter-spacing: -1px;
-  font-weight: normal;
-
-  span {
-    font-weight: bold;
-  }
+<style lang="scss">
+.page {
+  margin-top: 64px;
 }
 
 .recipes {
@@ -95,8 +88,12 @@ h1 {
   justify-content: center;
   max-width: 1080px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 32px 16px;
   transform: translateZ(0);
+
+  @media screen and (max-width: 392px) {
+    padding: 16px;
+  }
 }
 </style>
 
