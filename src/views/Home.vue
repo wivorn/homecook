@@ -38,9 +38,15 @@ export default {
         },
         {
           name: "Chawanmushi",
-          image: "steam_egg.jpg",
+          image: "chawanmushi.jpg",
           url:
             "https://www.justonecookbook.com/chawanmushi-savory-steamed-egg-custard/"
+        },
+        {
+          name: "Buttermilk Roast Chicken",
+          image: "buttermilk_roast_chicken.jpg",
+          url:
+            "https://www.saltfatacidheat.com/buttermilkmarinated-roast-chicken/"
         },
         {
           name: "กุ้งอบวุ้นเส้น",
@@ -49,10 +55,10 @@ export default {
           lang: "th"
         },
         {
-          name: "Buttermilk Roast Chicken",
-          image: "",
-          url:
-            "https://www.saltfatacidheat.com/buttermilkmarinated-roast-chicken/"
+          name: "ข้าวมันไก่",
+          image: "chicken_rice.jpg",
+          url: "https://www.wongnai.com/recipes/hainanese-chicken-rice",
+          lang: "th"
         }
       ]
     };
