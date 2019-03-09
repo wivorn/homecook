@@ -1,7 +1,16 @@
 <template>
-  <a class="recipe-card" :href="url" :data-lang="lang">
+  <a class="recipe-card" :href="recipe.url">
     <div class="image" :style="{ backgroundImage: imageUrl }"></div>
-    <h1>{{ name }}</h1>
+    <div class="info">
+      <h1 class="name">
+        {{ recipe.name }}
+        <span v-if="recipe.altName">({{ recipe.altName }})</span>
+      </h1>
+      <div class="tags" v-if="recipe.time">
+        <div class="tag time">{{ recipe.time }}</div>
+        <div class="tag" v-for="tag in recipe.tags" :key="tag">{{ tag }}</div>
+      </div>
+    </div>
   </a>
 </template>
 
@@ -9,13 +18,11 @@
 export default {
   name: "RecipeCard",
   props: {
-    image: String,
-    name: String,
-    url: String,
-    lang: String
+    recipe: Object
   },
   data() {
     return {
+      elem: null,
       left: 0,
       top: 0,
       offsetFactor: 10
@@ -23,15 +30,15 @@ export default {
   },
   computed: {
     imageUrl() {
-      if (this.image) {
-        return `url('` + require(`@/assets/${this.image}`) + `')`;
+      if (this.recipe.image) {
+        return `url('` + require(`@/assets/${this.recipe.image}`) + `')`;
       } else {
         return `url('` + require(`@/assets/placeholder.png`) + `')`;
       }
     }
   },
   methods: {
-    mouseMoveHandler: function(e) {
+    handleMouseMove: function(e) {
       const offsetX = 0.5 - (e.pageX - this.left) / this.$el.clientWidth;
       const offsetY = 0.5 - (e.pageY - this.top) / this.$el.clientHeight;
 
@@ -42,22 +49,28 @@ export default {
           this.offsetFactor}deg) rotateY(${-offsetX * this.offsetFactor}deg)`
       );
     },
-    mouseLeaveHandler: function(e) {
+    handleMouseLeave: function() {
       this.$el.setAttribute(
         "style",
         `transform: perspective(800px) translateY(0) rotateX(0) rotateY(0)`
       );
+    },
+    getPositions: function() {
+      this.left = this.elem.getBoundingClientRect().left;
+      this.top = this.elem.getBoundingClientRect().top;
     }
   },
   mounted() {
-    this.$el.addEventListener("mousemove", this.mouseMoveHandler);
-    this.$el.addEventListener("mouseleave", this.mouseLeaveHandler);
-    this.left = this.$el.getBoundingClientRect().left;
-    this.top = this.$el.getBoundingClientRect().top;
+    this.elem = this.$el;
+    this.elem.addEventListener("mousemove", this.handleMouseMove);
+    this.elem.addEventListener("mouseleave", this.handleMouseLeave);
+    window.addEventListener("resize", this.getPositions);
+    this.getPositions();
   },
   beforeDestroy() {
-    this.$el.removeEventListener("mousemove", this.mouseMoveHandler);
-    this.$el.removeEventListener("mouseleave", this.mouseLeaveHandler);
+    this.elem.removeEventListener("mousemove", this.handleMouseMove);
+    this.elem.removeEventListener("mouseleave", this.handleMouseLeave);
+    window.removeEventListener("resize", this.getPositions);
   }
 };
 </script>
@@ -66,26 +79,32 @@ export default {
 .recipe-card {
   position: relative;
   overflow: hidden;
-  flex: 1 1 33.333%;
+  flex: 1 1 300px;
   max-width: 300px;
-  margin: 0 20px 40px;
+  margin: 0 16px 32px;
   border-radius: 6px;
-  background: #f9f9f9;
+  background: #ffffff;
+  text-decoration: none;
+  text-align: left;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   backface-visibility: hidden;
   transform-style: preserve-3d;
   transition: transform 400ms;
   cursor: pointer;
-  text-decoration: none;
   color: #2c3e50;
 
   &:hover {
     transition: transform 100ms;
   }
 
-  @media screen and (max-width: 600px) {
-    flex-basis: 100%;
-    margin: 0 auto 40px;
+  @media screen and (max-width: 696px) {
+    flex: 0 1 100%;
+    max-width: 360px;
+  }
+
+  @media screen and (max-width: 392px) {
+    max-width: 100%;
+    margin: 0 auto 24px;
   }
 
   .image {
@@ -96,12 +115,39 @@ export default {
     background-position: center;
   }
 
-  h1 {
-    font-size: 20px;
+  .info {
+    padding: 16px;
+
+    .name {
+      display: block;
+      font-size: 20px;
+      margin: 0 0 12px;
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      letter-spacing: -0.5px;
+    }
   }
 
-  &[data-lang="th"] {
-    font-family: "Kanit";
+  .tag {
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 4px 8px;
+    background: #f2f2f2;
+    border-radius: 4px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #f2f2f2;
+
+    &.time {
+      background: white;
+      border: 1px solid #bbb;
+    }
+
+    & + .tag {
+      margin-left: 8px;
+    }
   }
 }
 </style>

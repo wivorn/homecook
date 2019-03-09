@@ -1,14 +1,11 @@
 <template>
   <div class="home">
-    <h1>HomeCook</h1>
+    <h1>Home<span>Cook</span></h1>
     <div class="recipes">
       <RecipeCard
         v-for="recipe in recipes"
         :key="recipe.name"
-        :image="recipe.image"
-        :name="recipe.name"
-        :url="recipe.url"
-        :lang="recipe.lang"
+        :recipe="recipe"
       />
     </div>
   </div>
@@ -28,37 +25,52 @@ export default {
       recipes: [
         {
           name: "Beef Udon",
+          altName: "肉うどん",
           image: "beef_udon.jpg",
-          url: "https://www.justonecookbook.com/beef-udon/"
+          url: "https://www.justonecookbook.com/beef-udon/",
+          time: "25 mins",
+          tags: ["Japanese", "Noodle Soup"]
         },
         {
-          name: "Zaru Soba",
+          name: "Cold Soba",
+          altName: "ざるそば",
           image: "cold_soba.jpg",
-          url: "https://www.justonecookbook.com/zaru-soba-cold-soba-noodles/"
+          url: "https://www.justonecookbook.com/zaru-soba-cold-soba-noodles/",
+          time: "15 mins",
+          tags: ["Japanese", "Noodle"]
         },
         {
-          name: "Chawanmushi",
+          name: "Steamed Egg",
+          altName: "ざるそば",
           image: "chawanmushi.jpg",
           url:
-            "https://www.justonecookbook.com/chawanmushi-savory-steamed-egg-custard/"
+            "https://www.justonecookbook.com/chawanmushi-savory-steamed-egg-custard/",
+          time: "30 mins",
+          tags: ["Japanese", "Egg"]
         },
         {
           name: "Buttermilk Roast Chicken",
           image: "buttermilk_roast_chicken.jpg",
           url:
-            "https://www.saltfatacidheat.com/buttermilkmarinated-roast-chicken/"
+            "https://www.saltfatacidheat.com/buttermilkmarinated-roast-chicken/",
+          time: "1 hour",
+          tags: ["Western", "Chicken"]
         },
         {
-          name: "กุ้งอบวุ้นเส้น",
+          name: "Baked Vermicelli Shrimp",
+          altName: "กุ้งอบวุ้นเส้น",
           image: "shrimp_with_vermicelli.jpg",
           url: "https://food.mthai.com/food-recipe/125476.html",
-          lang: "th"
+          time: "30 mins",
+          tags: ["Thai", "Shrimp", "Vermicelli"]
         },
         {
-          name: "ข้าวมันไก่",
+          name: "Chicken Rice",
+          altName: "ข้าวมันไก่",
           image: "chicken_rice.jpg",
           url: "https://www.wongnai.com/recipes/hainanese-chicken-rice",
-          lang: "th"
+          time: "1 hour",
+          tags: ["Thai", "Chicken", "Rice"]
         }
       ]
     };
@@ -69,6 +81,12 @@ export default {
 <style lang="scss" scoped>
 h1 {
   margin: 48px 0 40px;
+  letter-spacing: -1px;
+  font-weight: normal;
+
+  span {
+    font-weight: bold;
+  }
 }
 
 .recipes {
@@ -77,7 +95,7 @@ h1 {
   justify-content: center;
   max-width: 1080px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
   transform: translateZ(0);
 }
 </style>
