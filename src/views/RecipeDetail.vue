@@ -6,15 +6,24 @@
         <span v-if="recipe.altName">({{ recipe.altName }})</span>
       </h1>
       <div class="meta">
-        <p><strong>Total time:</strong> {{ recipe.time }}</p>
-        <p><strong>Serving:</strong> {{ recipe.serving }}</p>
+        <p class="time"><strong>Total time:</strong> {{ recipe.time }}</p>
+        <p class="serving">
+          <strong>Serving:</strong> {{ serving.adjusted }}
+          <button class="decrease" @click="decrease">-</button>
+          <button class="increase" @click="increase">+</button>
+        </p>
       </div>
       <div class="ingredients">
-        <h2>Ingredients ({{ totalIngredients }})</h2>
+        <h2>
+          Ingredients
+          <span class="count">({{ ingredientsCount || 'Prepared' }})</span>
+        </h2>
         <IngredientList
           v-for="group in recipe.ingredientGroups"
           :key="group.id"
           :group="group"
+          :serving="serving"
+          @selected="selected"
         />
       </div>
     </div>
@@ -29,16 +38,51 @@ export default {
   components: {
     IngredientList,
   },
+  data() {
+    return {
+      ingredientsCount: 0,
+      serving: {
+        original: 0,
+        adjusted: 0,
+      },
+    }
+  },
   computed: {
     recipe() {
       return this.$store.state.recipes.find(
         recipe => recipe.id === Number(this.$route.params.id)
       )
     },
-    totalIngredients() {
-      return this.recipe.ingredientGroups.reduce((total, group) => {
-        return (total += group.ingredients.length)
-      }, 0)
+  },
+  mounted() {
+    this.ingredientsCount = this.recipe.ingredientGroups.reduce(
+      (total, group) => {
+        return (total += group.ingredients.filter(
+          ingredient => !ingredient.optional
+        ).length)
+      },
+      0
+    )
+    this.serving.original = this.recipe.serving
+    this.serving.adjusted = this.recipe.serving
+  },
+  methods: {
+    selected(event) {
+      if (!event.optional) {
+        if (event.value) {
+          this.ingredientsCount--
+        } else {
+          this.ingredientsCount++
+        }
+      }
+    },
+    decrease() {
+      if (this.serving.adjusted > 1) {
+        this.serving.adjusted--
+      }
+    },
+    increase() {
+      this.serving.adjusted++
     },
   },
 }
@@ -57,12 +101,31 @@ export default {
       margin: 0 0 12px;
     }
 
-    .meta p {
-      display: inline-block;
-      margin: 0 0 12px;
+    .meta {
+      p {
+        display: inline-block;
+        margin: 0 0 12px;
 
-      & + p {
-        margin-left: 12px;
+        & + p {
+          margin-left: 12px;
+        }
+      }
+
+      .serving {
+        button {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          border: 1px solid #333;
+          border-radius: 50%;
+          font-size: 16px;
+          margin-left: 4px;
+
+          &:active {
+            background: #333;
+            color: white;
+          }
+        }
       }
     }
 
@@ -74,6 +137,10 @@ export default {
       h2 {
         margin: 0 0 12px;
         text-transform: uppercase;
+      }
+
+      .count {
+        text-transform: capitalize;
       }
     }
   }

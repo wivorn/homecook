@@ -24,8 +24,8 @@ export default new Vuex.Store({
                 id: 1,
                 quantity: 1,
                 unit: 'Tbsp',
-                name: 'Neutral flavor oil',
-                description: 'vegetable, canola, etc',
+                name: 'Vegetable oil',
+                substitute: ['canola'],
               },
               {
                 id: 2,
@@ -48,6 +48,7 @@ export default new Vuex.Store({
                 unit: 'packages',
                 name: 'Udon noodles',
                 description: 'Frozen',
+                url: 'https://www.justonecookbook.com/udon/',
               },
             ],
           },
@@ -116,6 +117,8 @@ export default new Vuex.Store({
                 unit: 'slice',
                 name: 'Narutomaki',
                 description: 'fish cakes',
+                url: 'https://www.justonecookbook.com/narutomaki/',
+                optional: true,
               },
               {
                 id: 2,
@@ -123,6 +126,7 @@ export default new Vuex.Store({
                 unit: 'sprig',
                 name: 'Mitsuba',
                 description: 'Japanese Parsley',
+                url: 'https://www.justonecookbook.com/mitsuba/',
                 optional: true,
               },
               {
@@ -139,6 +143,7 @@ export default new Vuex.Store({
                 unit: '',
                 name: 'Shichimi Togarashi',
                 description: 'Japanese seven spice',
+                url: 'https://www.justonecookbook.com/shichimi-togarashi/',
                 optional: true,
               },
             ],

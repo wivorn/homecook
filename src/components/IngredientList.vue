@@ -7,6 +7,8 @@
       v-for="ingredient in group.ingredients"
       :key="ingredient.id"
       :ingredient="ingredient"
+      :serving="serving"
+      @selected="selected"
     />
   </div>
 </template>
@@ -18,9 +20,15 @@ export default {
   name: 'IngredientList',
   props: {
     group: Object,
+    serving: Object,
   },
   components: {
     Ingredient,
+  },
+  methods: {
+    selected(event) {
+      this.$emit('selected', event)
+    },
   },
 }
 </script>

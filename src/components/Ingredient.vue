@@ -1,19 +1,23 @@
 <template>
   <div class="ingredient">
-    <button :class="{ selected: checked }" @click="checked = !checked">
+    <button
+      :class="{ selected: checked, optional: ingredient.optional }"
+      @click="selected"
+    >
       <span class="content">
         <span class="quantity" v-if="ingredient.quantity">
-          <span class="amount">{{ ingredient.quantity }}</span>
+          <span class="amount" v-html="computedQuantity"></span>
           <span class="unit">{{ ingredient.unit }}</span>
         </span>
         <span class="name">
-          <a v-if="ingredient.url" :href="ingredient.url">{{
+          <a v-if="ingredient.url" :href="ingredient.url" @click.stop>{{
             ingredient.name
           }}</a>
           <span v-else>{{ ingredient.name }}</span>
           <span class="description" v-if="ingredient.description"
             >({{ ingredient.description }})</span
           >
+          <span v-if="ingredient.optional"> – Optional</span>
         </span>
       </span>
     </button>
@@ -25,11 +29,48 @@ export default {
   name: 'Ingredient',
   props: {
     ingredient: Object,
+    serving: Object,
   },
   data() {
     return {
       checked: false,
     }
+  },
+  computed: {
+    computedQuantity() {
+      const unitToConvert = ['tbsp', 'tsp', 'cup']
+      const vulgarFraction = {
+        0.25: '¼',
+        0.33: '⅓',
+        0.5: '½',
+        0.67: '⅔',
+        0.75: '¾',
+      }
+
+      let quantity =
+        (this.ingredient.quantity * this.serving.adjusted) /
+        this.serving.original
+
+      if (
+        !this.ingredient.unit ||
+        unitToConvert.includes(this.ingredient.unit.toLowerCase())
+      ) {
+        const whole = Math.floor(quantity) ? String(Math.floor(quantity)) : ''
+        const fraction = vulgarFraction[quantity % 1] || ''
+        return whole + fraction
+      } else {
+        return quantity
+      }
+    },
+  },
+  methods: {
+    selected(e) {
+      this.checked = !this.checked
+      this.$emit('selected', {
+        value: this.checked,
+        optional: this.ingredient.optional,
+      })
+    },
   },
 }
 </script>
@@ -78,6 +119,10 @@ export default {
       .content {
         text-decoration: line-through;
       }
+    }
+
+    &.optional {
+      opacity: 0.6;
     }
   }
 
