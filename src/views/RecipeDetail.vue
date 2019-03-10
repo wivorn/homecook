@@ -10,7 +10,7 @@
         <p><strong>Serving:</strong> {{ recipe.serving }}</p>
       </div>
       <div class="ingredients">
-        <h2>Ingredients</h2>
+        <h2>Ingredients ({{ totalIngredients }})</h2>
         <IngredientList
           v-for="group in recipe.ingredientGroups"
           :key="group.id"
@@ -34,6 +34,11 @@ export default {
       return this.$store.state.recipes.find(
         recipe => recipe.id === Number(this.$route.params.id)
       )
+    },
+    totalIngredients() {
+      return this.recipe.ingredientGroups.reduce((total, group) => {
+        return (total += group.ingredients.length)
+      }, 0)
     },
   },
 }

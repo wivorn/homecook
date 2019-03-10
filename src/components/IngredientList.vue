@@ -1,6 +1,8 @@
 <template>
   <div class="ingredient-list">
-    <div class="group-name">{{ group.name }}</div>
+    <div class="group-name" v-if="group.name" v-once>
+      {{ group.name }}
+    </div>
     <Ingredient
       v-for="ingredient in group.ingredients"
       :key="ingredient.id"
