@@ -16,63 +16,63 @@
 
 <script>
 export default {
-  name: "RecipeCard",
+  name: 'RecipeCard',
   props: {
-    recipe: Object
+    recipe: Object,
   },
   data() {
     return {
       elem: null,
       left: 0,
       top: 0,
-      offsetFactor: 8
-    };
+      offsetFactor: 8,
+    }
   },
   computed: {
     imageUrl() {
       if (this.recipe.image) {
-        return `url('` + require(`@/assets/${this.recipe.image}`) + `')`;
+        return `url('` + require(`@/assets/${this.recipe.image}`) + `')`
       } else {
-        return `url('` + require(`@/assets/placeholder.png`) + `')`;
+        return `url('` + require(`@/assets/placeholder.png`) + `')`
       }
-    }
+    },
   },
   methods: {
     handleMouseMove: function(e) {
-      const offsetX = 0.5 - (e.pageX - this.left) / this.$el.clientWidth;
-      const offsetY = 0.5 - (e.pageY - this.top) / this.$el.clientHeight;
+      const offsetX = 0.5 - (e.pageX - this.left) / this.$el.clientWidth
+      const offsetY = 0.5 - (e.pageY - this.top) / this.$el.clientHeight
 
       this.$el.setAttribute(
-        "style",
+        'style',
         `transform: perspective(800px) translateY(${offsetY *
           this.offsetFactor}px) rotateX(${offsetY *
           this.offsetFactor}deg) rotateY(${-offsetX * this.offsetFactor}deg)`
-      );
+      )
     },
     handleMouseLeave: function() {
       this.$el.setAttribute(
-        "style",
+        'style',
         `transform: perspective(800px) translateY(0) rotateX(0) rotateY(0)`
-      );
+      )
     },
     getPositions: function() {
-      this.left = this.elem.getBoundingClientRect().left;
-      this.top = this.elem.getBoundingClientRect().top;
-    }
+      this.left = this.elem.getBoundingClientRect().left
+      this.top = this.elem.getBoundingClientRect().top
+    },
   },
   mounted() {
-    this.elem = this.$el;
-    this.elem.addEventListener("mousemove", this.handleMouseMove);
-    this.elem.addEventListener("mouseleave", this.handleMouseLeave);
-    window.addEventListener("resize", this.getPositions);
-    this.getPositions();
+    this.elem = this.$el
+    this.elem.addEventListener('mousemove', this.handleMouseMove)
+    this.elem.addEventListener('mouseleave', this.handleMouseLeave)
+    window.addEventListener('resize', this.getPositions)
+    this.getPositions()
   },
   beforeDestroy() {
-    this.elem.removeEventListener("mousemove", this.handleMouseMove);
-    this.elem.removeEventListener("mouseleave", this.handleMouseLeave);
-    window.removeEventListener("resize", this.getPositions);
-  }
-};
+    this.elem.removeEventListener('mousemove', this.handleMouseMove)
+    this.elem.removeEventListener('mouseleave', this.handleMouseLeave)
+    window.removeEventListener('resize', this.getPositions)
+  },
+}
 </script>
 
 <style lang="scss" scoped>
