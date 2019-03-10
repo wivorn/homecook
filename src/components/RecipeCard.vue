@@ -1,5 +1,8 @@
 <template>
-  <a class="recipe-card" :href="recipe.url">
+  <router-link
+    class="recipe-card"
+    :to="{ name: 'recipeDetail', params: { id: recipe.id } }"
+  >
     <div class="image" :style="{ backgroundImage: imageUrl }"></div>
     <div class="info">
       <h1 class="name">
@@ -11,7 +14,7 @@
         <div class="tag" v-for="tag in recipe.tags" :key="tag">{{ tag }}</div>
       </div>
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script>
@@ -110,7 +113,7 @@ export default {
 
   .image {
     width: 100%;
-    height: 160px;
+    height: 180px;
     background-color: #f2f2f2;
     background-size: cover;
     background-position: center;
@@ -128,25 +131,6 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
       letter-spacing: -0.5px;
-    }
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 4px 8px;
-    background: #f2f2f2;
-    border-radius: 4px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.8);
-    border: 1px solid #f2f2f2;
-
-    &.time {
-      background: white;
-      border: 1px solid #bbb;
-    }
-
-    & + .tag {
-      margin-left: 8px;
     }
   }
 }

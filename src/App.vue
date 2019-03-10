@@ -5,24 +5,41 @@
         <h1 class="logo">Home<span>Cook</span></h1>
       </div>
     </nav>
-    <router-view />
+    <div class="page">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <style lang="scss">
-@import url("./styles/normalize.scss");
+@import url('./styles/normalize.scss');
 
-* {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
+}
+
+html,
+body,
+.page {
+  min-height: 100%;
+  background: #f9f9f9;
+}
+
+button {
+  border: 0;
+  padding: 0;
 }
 
 #app {
   position: relative;
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 
   nav {
     position: fixed;
@@ -47,9 +64,23 @@
     }
   }
 
-  .container {
-    max-width: 964px;
-    margin: 0 auto;
+  .tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #f2f2f2;
+    border-radius: 4px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #f2f2f2;
+
+    &.time {
+      background: white;
+      border: 1px solid #bbb;
+    }
+
+    & + .tag {
+      margin-left: 8px;
+    }
   }
 }
 </style>
