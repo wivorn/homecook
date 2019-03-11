@@ -11,6 +11,24 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'App',
+  methods: {
+    handleFirstTab: function(e) {
+      if (e.keyCode === 9) {
+        document.body.classList.add('user-is-tabbing')
+        window.removeEventListener('keydown', this.handleFirstTab)
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('keydown', this.handleFirstTab)
+  },
+}
+</script>
+
+
 <style lang="scss">
 @import url('./styles/normalize.scss');
 
@@ -18,6 +36,7 @@
 *:before,
 *:after {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -25,6 +44,15 @@ body,
 .page {
   min-height: 100%;
   background: #f9f9f9;
+}
+
+body:not(.user-is-tabbing) {
+  button:focus,
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+  }
 }
 
 button {

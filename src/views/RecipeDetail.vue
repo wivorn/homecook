@@ -3,7 +3,9 @@
     <div class="container">
       <h1 class="recipe-name">
         {{ recipe.name }}
-        <span v-if="recipe.altName">({{ recipe.altName }})</span>
+        <span class="alt-name" v-if="recipe.altName"
+          >({{ recipe.altName }})</span
+        >
       </h1>
       <div class="meta">
         <p class="time"><strong>Total time:</strong> {{ recipe.time }}</p>
@@ -99,6 +101,12 @@ export default {
     .recipe-name {
       text-align: center;
       margin: 0 0 12px;
+
+      @media screen and (max-width: 392px) {
+        .alt-name {
+          display: none;
+        }
+      }
     }
 
     .meta {
@@ -120,6 +128,7 @@ export default {
           border-radius: 50%;
           font-size: 16px;
           margin-left: 4px;
+          background: none;
 
           &:active {
             background: #333;

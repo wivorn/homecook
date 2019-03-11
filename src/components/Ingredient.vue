@@ -76,12 +76,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$speed: 200ms;
+
 .ingredient {
   & + .ingredient {
     margin-top: 4px;
   }
 
   button {
+    position: relative;
     display: flex;
     align-items: top;
     background: none;
@@ -95,13 +98,18 @@ export default {
       flex: 0 0 18px;
       width: 18px;
       height: 18px;
+      border-radius: 2px;
       background: #efeff0;
       border: 1px solid #2c3e50;
+      font-size: 14px;
+      line-height: 18px;
       z-index: 1;
       margin-right: 8px;
     }
 
     &.selected {
+      opacity: 0.2;
+
       &:after {
         content: '';
         display: block;
@@ -119,10 +127,6 @@ export default {
       .content {
         text-decoration: line-through;
       }
-    }
-
-    &.optional {
-      opacity: 0.6;
     }
   }
 
@@ -148,7 +152,12 @@ export default {
   }
 
   .description {
+    font-style: italic;
     margin-left: 4px;
+
+    @media screen and (max-width: 392px) {
+      display: none;
+    }
   }
 }
 </style>
