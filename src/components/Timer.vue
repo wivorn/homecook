@@ -2,10 +2,10 @@
   <div :class="{ timer: true, active: this.timerRunning }">
     <span class="time">{{ formattedTime }}</span>
     <div class="controls">
-      <button :disabled="checked" @click="start">
+      <button :disabled="checked" @click="start" v-if="!timerRunning">
         <i class="material-icons">play_arrow</i>
       </button>
-      <button :disabled="checked" @click="stop">
+      <button :disabled="checked" @click="stop" v-else>
         <i class="material-icons">loop</i>
       </button>
     </div>
@@ -87,19 +87,19 @@ export default {
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
-  background: #ccc;
-  padding: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
   max-width: 180px;
   border-radius: 4px;
   font-size: 20px;
   transition: background 0.3s;
 
   &.active {
-    background: #2ecc71;
+    background: #63e69a;
   }
 
   .time {
-    padding: 0 8px;
+    padding: 0 8px 0 4px;
   }
 
   .controls {
@@ -112,6 +112,7 @@ export default {
       justify-content: center;
       height: 30px;
       width: 30px;
+      opacity: 1;
 
       &:active:not(:disabled) {
         i {
