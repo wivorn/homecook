@@ -8,12 +8,25 @@
         >
       </h1>
       <div class="meta">
-        <p class="time"><strong>Total time:</strong> {{ recipe.time }}</p>
-        <p class="serving">
+        <div class="time">
+          <span class="prep-time">
+            <strong>Prep Time:</strong>
+            {{ recipe.durations.prepTime }} mins
+          </span>
+          <span class="cook-time">
+            <strong>Cook Time:</strong>
+            {{ recipe.durations.cookTime }} mins
+          </span>
+          <span class="total-time">
+            <strong>Total Time:</strong>
+            {{ recipe.durations.totalTime }} mins
+          </span>
+        </div>
+        <div class="serving">
           <strong>Serving:</strong> {{ serving.adjusted }}
           <button class="decrease" @click="decrease">-</button>
           <button class="increase" @click="increase">+</button>
-        </p>
+        </div>
       </div>
       <div class="ingredients">
         <h2>
@@ -30,6 +43,21 @@
           :unit="unit"
           @selected="selected"
         />
+      </div>
+      <div class="instructions">
+        <h2>Instructions</h2>
+        <div class="steps">
+          <div
+            class="step"
+            v-for="(step, index) in recipe.instructions.steps"
+            :key="index"
+          >
+            <div class="index">{{ index + 1 }}.</div>
+            <div class="text">
+              {{ step.text }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -139,16 +167,35 @@ export default {
     }
 
     .meta {
-      p {
-        display: inline-block;
+      margin-bottom: 12px;
+
+      .time {
         margin: 0 0 12px;
 
-        & + p {
-          margin-left: 12px;
+        span {
+          display: inline-block;
+
+          & + span {
+            margin-left: 12px;
+          }
+        }
+
+        @media screen and (max-width: 490px) {
+          display: inline-block;
+
+          .prep-time,
+          .cook-time {
+            display: none;
+          }
+          .total-time {
+            margin-left: 0;
+          }
         }
       }
 
       .serving {
+        margin-bottom: 12px;
+
         button {
           display: inline-block;
           width: 24px;
@@ -163,6 +210,11 @@ export default {
             color: white;
           }
         }
+
+        @media screen and (max-width: 490px) {
+          display: inline-block;
+          margin-left: 12px;
+        }
       }
     }
 
@@ -171,6 +223,7 @@ export default {
       padding: 24px;
       text-align: left;
       border-radius: 8px;
+      margin-bottom: 24px;
 
       h2 {
         display: flex;
@@ -184,7 +237,7 @@ export default {
           border: 1px solid #333;
           padding: 4px 8px;
           border-radius: 4px;
-          min-width: 70px;
+          min-width: 60px;
           text-transform: capitalize;
 
           &:active {
@@ -196,6 +249,34 @@ export default {
 
       .count {
         text-transform: capitalize;
+      }
+    }
+
+    .instructions {
+      text-align: left;
+      padding: 0 16px;
+
+      h2 {
+        text-transform: uppercase;
+        margin: 0 0 12px;
+      }
+
+      .step {
+        display: flex;
+        padding: 8px 0;
+        margin-bottom: 4px;
+        cursor: pointer;
+
+        .index {
+          flex: 0 0 23px;
+          text-align: right;
+          line-height: 1.4;
+        }
+
+        .text {
+          margin-left: 8px;
+          line-height: 1.4;
+        }
       }
     }
   }
