@@ -44,32 +44,20 @@
           @selected="selected"
         />
       </div>
-      <div class="instructions">
-        <h2>Instructions</h2>
-        <div class="steps">
-          <div
-            class="step"
-            v-for="(step, index) in recipe.instructions.steps"
-            :key="index"
-          >
-            <div class="index">{{ index + 1 }}.</div>
-            <div class="text">
-              {{ step.text }}
-            </div>
-          </div>
-        </div>
-      </div>
+      <Instructions :instructions="recipe.instructions"></Instructions>
     </div>
   </div>
 </template>
 
 <script>
 import IngredientList from '@/components/IngredientList'
+import Instructions from '@/components/Instructions'
 
 export default {
   name: 'RecipeDetail',
   components: {
     IngredientList,
+    Instructions,
   },
   data() {
     return {
@@ -152,7 +140,7 @@ export default {
     margin: 0 auto;
 
     @media screen and (max-width: 392px) {
-      padding: 16px 0;
+      padding: 16px;
     }
 
     .recipe-name {
@@ -225,6 +213,11 @@ export default {
       border-radius: 8px;
       margin-bottom: 24px;
 
+      @media screen and (max-width: 392px) {
+        padding: 16px;
+        margin: 0 -16px 24px;
+      }
+
       h2 {
         display: flex;
         justify-content: space-between;
@@ -249,34 +242,6 @@ export default {
 
       .count {
         text-transform: capitalize;
-      }
-    }
-
-    .instructions {
-      text-align: left;
-      padding: 0 16px;
-
-      h2 {
-        text-transform: uppercase;
-        margin: 0 0 12px;
-      }
-
-      .step {
-        display: flex;
-        padding: 8px 0;
-        margin-bottom: 4px;
-        cursor: pointer;
-
-        .index {
-          flex: 0 0 23px;
-          text-align: right;
-          line-height: 1.4;
-        }
-
-        .text {
-          margin-left: 8px;
-          line-height: 1.4;
-        }
       }
     }
   }
