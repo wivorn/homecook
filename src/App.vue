@@ -58,6 +58,7 @@ body:not(.user-is-tabbing) {
 button {
   border: 0;
   padding: 0;
+  background: none;
   cursor: pointer;
 }
 

@@ -8,6 +8,7 @@
       :key="ingredient.id"
       :ingredient="ingredient"
       :serving="serving"
+      :unit="unit"
       @selected="selected"
     />
   </div>
@@ -21,6 +22,7 @@ export default {
   props: {
     group: Object,
     serving: Object,
+    unit: String,
   },
   components: {
     Ingredient,

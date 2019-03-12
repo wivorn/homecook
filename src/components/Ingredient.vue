@@ -6,8 +6,8 @@
     >
       <span class="content">
         <span class="quantity" v-if="ingredient.quantity">
-          <span class="amount" v-html="computedQuantity"></span>
-          <span class="unit">{{ ingredient.unit }}</span>
+          <span class="amount" v-html="prettyQuantity"></span>
+          <span class="unit">{{ computedUnit }}</span>
         </span>
         <span class="name">
           <a v-if="ingredient.url" :href="ingredient.url" @click.stop>{{
@@ -30,15 +30,100 @@ export default {
   props: {
     ingredient: Object,
     serving: Object,
+    unit: String,
   },
   data() {
     return {
       checked: false,
+      truncate: false,
     }
   },
   computed: {
     computedQuantity() {
+      this.truncate = false
+      const quantity =
+        (this.ingredient.quantity * this.serving.adjusted) /
+        this.serving.original
+
+      if (this.unit === 'metric') {
+        const currentUnit = this.ingredient.unit.toLowerCase()
+
+        if (currentUnit === 'tbsp') {
+          return quantity * 15
+        } else if (currentUnit === 'tsp') {
+          return quantity * 5
+        } else if (currentUnit === 'cup') {
+          const convertedQuantity = quantity * 240
+          if (convertedQuantity >= 1000) {
+            this.truncate = true
+            return parseFloat(convertedQuantity / 1000).toFixed(2)
+          } else {
+            return convertedQuantity
+          }
+        } else if (currentUnit === 'lb') {
+          const convertedQuantity = quantity * 454
+          if (convertedQuantity >= 1000) {
+            this.truncate = true
+            return parseFloat((quantity * 454) / 1000).toFixed(2)
+          } else {
+            return parseFloat(quantity * 454).toFixed(0)
+          }
+        } else {
+          return quantity
+        }
+      } else if (this.unit === 'US') {
+        const currentUnit = this.ingredient.unit.toLowerCase()
+
+        if (currentUnit === 'l') {
+          return parseFloat(quantity / 240).toFixed(3)
+        } else if (currentUnit === 'ml') {
+          if (quantity > 25) {
+            return Math.round(quantity / 25)
+          } else {
+            return Math.round(quantity / 5)
+          }
+        } else if (currentUnit === 'g') {
+          return parseFloat(quantity / 454).toFixed(3)
+        } else {
+          return quantity
+        }
+      }
+    },
+    computedUnit() {
+      if (this.unit === 'metric') {
+        const currentUnit = this.ingredient.unit.toLowerCase()
+        if (
+          currentUnit === 'tbsp' ||
+          currentUnit === 'tsp' ||
+          currentUnit === 'cup'
+        ) {
+          return this.truncate ? 'L' : 'mL'
+        } else if (currentUnit === 'lb') {
+          return this.truncate ? 'kg' : 'g'
+        } else {
+          return this.ingredient.unit
+        }
+      } else {
+        const currentUnit = this.ingredient.unit.toLowerCase()
+
+        if (currentUnit === 'l') {
+          return 'cup'
+        } else if (currentUnit === 'ml') {
+          if (this.ingredient.quantity > 25) {
+            return 'Tbsp'
+          } else {
+            return 'tsp'
+          }
+        } else if (currentUnit === 'g') {
+          return 'lb'
+        } else {
+          return this.ingredient.unit
+        }
+      }
+    },
+    prettyQuantity() {
       const unitToConvert = ['tbsp', 'tsp', 'cup']
+      const unitNotToConvert = ['ml', 'g', 'kg', 'l', 'lb']
       const vulgarFraction = {
         0.25: '¼',
         0.33: '⅓',
@@ -47,19 +132,20 @@ export default {
         0.75: '¾',
       }
 
-      let quantity =
-        (this.ingredient.quantity * this.serving.adjusted) /
-        this.serving.original
+      const unit = this.computedUnit.toLowerCase()
 
       if (
-        !this.ingredient.unit ||
-        unitToConvert.includes(this.ingredient.unit.toLowerCase())
+        !this.computedUnit ||
+        !unitNotToConvert.includes(unit) ||
+        unitToConvert.includes(unit)
       ) {
-        const whole = Math.floor(quantity) ? String(Math.floor(quantity)) : ''
-        const fraction = vulgarFraction[quantity % 1] || ''
+        const whole = Math.floor(this.computedQuantity)
+          ? String(Math.floor(this.computedQuantity))
+          : ''
+        const fraction = vulgarFraction[this.computedQuantity % 1] || ''
         return whole + fraction
       } else {
-        return quantity
+        return this.computedQuantity
       }
     },
   },

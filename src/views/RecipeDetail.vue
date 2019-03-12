@@ -18,13 +18,16 @@
       <div class="ingredients">
         <h2>
           Ingredients
-          <span class="count">({{ ingredientsCount || 'Prepared' }})</span>
+          <button class="unit" @click="toggleUnit">
+            {{ this.unit === 'US' ? 'metric' : 'US' }}
+          </button>
         </h2>
         <IngredientList
           v-for="group in recipe.ingredientGroups"
           :key="group.id"
           :group="group"
           :serving="serving"
+          :unit="unit"
           @selected="selected"
         />
       </div>
@@ -42,11 +45,15 @@ export default {
   },
   data() {
     return {
-      ingredientsCount: 0,
+      ingredientsUnit: {
+        count: 0,
+        us: 0,
+      },
       serving: {
         original: 0,
         adjusted: 0,
       },
+      unit: 'US',
     }
   },
   computed: {
@@ -57,16 +64,31 @@ export default {
     },
   },
   mounted() {
-    this.ingredientsCount = this.recipe.ingredientGroups.reduce(
-      (total, group) => {
-        return (total += group.ingredients.filter(
-          ingredient => !ingredient.optional
-        ).length)
+    const USUnits = ['tbsp', 'tsp', 'cup']
+    this.ingredientsUnit = this.recipe.ingredientGroups.reduce(
+      (accum, group) => {
+        group.ingredients
+          .filter(ingredient => !ingredient.optional)
+          .forEach(ingredient => {
+            accum.count++
+            if (USUnits.includes(ingredient.unit.toLowerCase())) {
+              accum.us++
+            }
+          })
+
+        return accum
       },
-      0
+      { count: 0, us: 0 }
     )
+
     this.serving.original = this.recipe.serving
     this.serving.adjusted = this.recipe.serving
+
+    if (this.ingredientsUnit.us / this.ingredientsUnit.count > 0.5) {
+      this.unit = 'US'
+    } else {
+      this.unit = 'metric'
+    }
   },
   methods: {
     selected(event) {
@@ -86,6 +108,9 @@ export default {
     increase() {
       this.serving.adjusted++
     },
+    toggleUnit() {
+      this.unit = this.unit === 'metric' ? 'US' : 'metric'
+    },
   },
 }
 </script>
@@ -97,6 +122,10 @@ export default {
     max-width: 800px;
     padding: 24px 16px;
     margin: 0 auto;
+
+    @media screen and (max-width: 392px) {
+      padding: 16px 0;
+    }
 
     .recipe-name {
       text-align: center;
@@ -128,7 +157,6 @@ export default {
           border-radius: 50%;
           font-size: 16px;
           margin-left: 4px;
-          background: none;
 
           &:active {
             background: #333;
@@ -142,10 +170,28 @@ export default {
       background: #efeff0;
       padding: 24px;
       text-align: left;
+      border-radius: 8px;
 
       h2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin: 0 0 12px;
         text-transform: uppercase;
+
+        .unit {
+          font-size: 14px;
+          border: 1px solid #333;
+          padding: 4px 8px;
+          border-radius: 4px;
+          min-width: 70px;
+          text-transform: capitalize;
+
+          &:active {
+            background: #333;
+            color: white;
+          }
+        }
       }
 
       .count {
