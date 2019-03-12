@@ -2,7 +2,9 @@
   <div id="app">
     <nav>
       <div class="container">
-        <h1 class="logo">Home<span>Cook</span></h1>
+        <router-link :to="{ path: '/' }">
+          <h1 class="logo">Home<span>Cook</span></h1>
+        </router-link>
       </div>
     </nav>
     <div class="page">
@@ -81,6 +83,11 @@ button {
     text-align: center;
     box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.1);
     padding: 16px;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
     .logo {
       margin: 0;

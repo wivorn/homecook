@@ -1,15 +1,15 @@
 <template>
-  <div :class="{ step: true, completed: checked }" @click="handleClick">
+  <div :class="{ step: true, completed: checked }">
     <div class="info">
       <div class="index">{{ index + 1 }}.</div>
-      <div class="text">
+      <div class="text" @click="handleClick">
         {{ step.text }}
       </div>
     </div>
     <Timer
       v-if="step.time"
       :time="step.time"
-      :startTimer="startTimer"
+      :checked="checked"
       @completed="handleTimerComplete"
     ></Timer>
   </div>
@@ -35,20 +35,10 @@ export default {
   },
   methods: {
     handleClick(e) {
-      if (!this.step.time) {
-        this.checked = !this.checked
-      } else {
-        if (!this.checked) {
-          this.startTimer = !this.startTimer
-        } else {
-          this.checked = false
-          this.startTimer = false
-        }
-      }
+      this.checked = !this.checked
     },
     handleTimerComplete(e) {
       this.checked = true
-      this.startTimer = false
     },
   },
 }

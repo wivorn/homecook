@@ -1,9 +1,13 @@
 <template>
-  <div class="timer">
+  <div :class="{ timer: true, active: this.timerRunning }">
     <span class="time">{{ formattedTime }}</span>
     <div class="controls">
-      <button><i class="material-icons" @click="start">play_arrow</i></button>
-      <button><i class="material-icons" @click="stop">loop</i></button>
+      <button :disabled="checked" @click="start">
+        <i class="material-icons">play_arrow</i>
+      </button>
+      <button :disabled="checked" @click="stop">
+        <i class="material-icons">loop</i>
+      </button>
     </div>
   </div>
 </template>
@@ -13,12 +17,13 @@ export default {
   name: 'Timer',
   props: {
     time: Number,
-    startTimer: Boolean,
+    checked: Boolean,
   },
   data() {
     return {
       current: 0,
       id: null,
+      timerRunning: false,
     }
   },
   computed: {
@@ -43,6 +48,7 @@ export default {
     },
     start() {
       this.stop()
+      this.timerRunning = true
 
       this.id = window.setInterval(() => {
         if (this.current) {
@@ -56,6 +62,7 @@ export default {
     },
     stop() {
       this.current = this.time
+      this.timerRunning = false
       if (this.id) {
         window.clearInterval(this.id)
         this.id = null
@@ -66,11 +73,8 @@ export default {
     this.current = this.time
   },
   watch: {
-    startTimer(value, prevValue) {
-      console.log(value)
+    checked(value, prevValue) {
       if (value) {
-        this.start()
-      } else {
         this.stop()
       }
     },
@@ -88,6 +92,11 @@ export default {
   max-width: 180px;
   border-radius: 4px;
   font-size: 20px;
+  transition: background 0.3s;
+
+  &.active {
+    background: #2ecc71;
+  }
 
   .time {
     padding: 0 8px;
@@ -104,16 +113,16 @@ export default {
       height: 30px;
       width: 30px;
 
-      &:active {
+      &:active:not(:disabled) {
         i {
-          color: #999;
+          color: rgba(0, 0, 0, 0.8);
         }
       }
 
       i {
         font-size: 24px;
         line-height: 1;
-        color: #555;
+        color: rgba(0, 0, 0, 0.5);
       }
     }
   }
