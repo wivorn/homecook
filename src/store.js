@@ -176,10 +176,7 @@ export default new Vuex.Store({
             {
               text:
                 'Bring a big pot of water to a boil. Once boiling, cook the frozen udon for 4 mins. Loosen up the noodles once they started to separate.',
-              time: {
-                length: 4,
-                unit: 'min',
-              },
+              time: 240,
             },
             {
               text:

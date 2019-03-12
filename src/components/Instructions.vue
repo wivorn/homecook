@@ -18,7 +18,7 @@ import Step from '@/components/Step'
 export default {
   name: 'Instructions',
   props: {
-    instructions: String,
+    instructions: Object,
   },
   components: {
     Step,
