@@ -6,9 +6,9 @@ export default {
     'https://www.justonecookbook.com/chawanmushi-savory-steamed-egg-custard/',
   description: '',
   durations: {
-    prepTime: 10,
-    cookTime: 20,
-    totalTime: 30,
+    prepTime: 15,
+    cookTime: 25,
+    totalTime: 40,
   },
   serving: 2,
   tags: ['Japanese', 'Egg'],
@@ -83,6 +83,7 @@ export default {
       {
         text:
           'Cut chicken thigh into ½-inch pieces and put them in a bowl. Add ½ Tbsp sake and set aside for 15 minutes.',
+        time: 900,
       },
       {
         text:
@@ -105,7 +106,8 @@ export default {
       },
       {
         text:
-          'Once water starts boiling, reduce the heat to the lowest heat. Gently place the cups inside the hot water and cover the pot with the lid. Cook for 25-30 minutes on the lowest heat. If you do not add the chicken, the cooking time should only be 15-20 minutes. Insert a skewer in the center of the cup to check if the egg is done.',
+          'Once water starts boiling, reduce the heat to the lowest heat. Gently place the cups inside the hot water and cover the pot with the lid. Cook for 25 minutes on the lowest heat. Insert a skewer in the center of the cup to check if the egg is done.',
+        time: 1500,
       },
     ],
     note:
