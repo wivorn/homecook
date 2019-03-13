@@ -1,12 +1,15 @@
 <template>
   <div class="ingredient-list">
-    <div class="group-name" v-if="group.name" v-once>
-      {{ group.name }}
-    </div>
-    <Ingredient
-      v-for="ingredient in group.ingredients"
-      :key="ingredient.id"
-      :ingredient="ingredient"
+    <h2>
+      Ingredients
+      <button class="unit" @click="toggleUnit">
+        {{ this.unit === 'US' ? 'metric' : 'US' }}
+      </button>
+    </h2>
+    <IngredientGroup
+      v-for="(group, index) in ingredientGroups"
+      :key="index"
+      :group="group"
       :serving="serving"
       :unit="unit"
       @selected="selected"
@@ -15,42 +18,109 @@
 </template>
 
 <script>
-import Ingredient from '@/components/Ingredient'
+import IngredientGroup from '@/components/IngredientGroup'
 
 export default {
   name: 'IngredientList',
   props: {
-    group: Object,
+    ingredientGroups: Array,
     serving: Object,
-    unit: String,
   },
   components: {
-    Ingredient,
+    IngredientGroup,
+  },
+  data() {
+    return {
+      ingredientsUnit: {
+        count: 0,
+        us: 0,
+      },
+      unit: 'US',
+    }
+  },
+  mounted() {
+    const USUnits = ['tbsp', 'tsp', 'cup']
+
+    this.ingredientsUnit = this.ingredientGroups.reduce(
+      (accum, group) => {
+        group.ingredients.forEach(ingredient => {
+          accum.count++
+          if (USUnits.includes(ingredient.unit.toLowerCase())) {
+            accum.us++
+          }
+        })
+
+        return accum
+      },
+      { count: 0, us: 0 }
+    )
+
+    console.log(this.ingredientsUnit)
+
+    if (this.ingredientsUnit.us / this.ingredientsUnit.count >= 0.5) {
+      this.unit = 'US'
+    } else {
+      this.unit = 'metric'
+    }
   },
   methods: {
     selected(event) {
-      this.$emit('selected', event)
+      if (!event.optional) {
+        if (event.value) {
+          this.ingredientsUnit.count--
+        } else {
+          this.ingredientsUnit.count++
+        }
+      }
+    },
+    toggleUnit() {
+      this.unit = this.unit === 'metric' ? 'US' : 'metric'
     },
   },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ingredient-list {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
+  background: #efeff0;
+  padding: 24px;
+  text-align: left;
+  border-radius: 8px;
+  margin-bottom: 24px;
 
-  .group-name {
-    font-weight: bold;
-    font-style: italic;
-    margin-bottom: 4px;
+  @media screen and (max-width: 392px) {
+    padding: 16px;
+    margin: 0 -16px 24px;
   }
 
-  & + .ingredient-list {
+  h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+
+    .unit {
+      font-size: 14px;
+      border: 1px solid #333;
+      padding: 4px 8px;
+      border-radius: 4px;
+      min-width: 60px;
+      text-transform: capitalize;
+
+      &:active {
+        background: #333;
+        color: white;
+      }
+    }
+  }
+
+  .count {
+    text-transform: capitalize;
+  }
+
+  .ingredientGroups + .ingredientGroups {
     margin-top: 12px;
   }
 }
 </style>
-
-

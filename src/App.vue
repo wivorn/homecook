@@ -64,6 +64,12 @@ button {
   cursor: pointer;
 }
 
+a,
+a:visited {
+  color: #e74c3c;
+  text-decoration: none;
+}
+
 #app {
   position: relative;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

@@ -1,7 +1,7 @@
 <template>
   <router-link
     class="recipe-card"
-    :to="{ name: 'recipeDetail', params: { id: recipe.id } }"
+    :to="{ name: 'recipeDetail', params: { name: recipe.name } }"
   >
     <div class="image" :style="{ backgroundImage: imageUrl }"></div>
     <div class="info">
@@ -9,8 +9,8 @@
         {{ recipe.name }}
         <span v-if="recipe.altName">({{ recipe.altName }})</span>
       </h1>
-      <div class="tags" v-if="recipe.time">
-        <div class="tag time">{{ recipe.time }}</div>
+      <div class="tags" v-if="recipe.durations.totalTime">
+        <div class="tag time">{{ recipe.durations.totalTime }} mins</div>
         <div class="tag" v-for="tag in recipe.tags" :key="tag">{{ tag }}</div>
       </div>
     </div>

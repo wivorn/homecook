@@ -28,23 +28,14 @@
           <button class="increase" @click="increase">+</button>
         </div>
       </div>
-      <div class="ingredients">
-        <h2>
-          Ingredients
-          <button class="unit" @click="toggleUnit">
-            {{ this.unit === 'US' ? 'metric' : 'US' }}
-          </button>
-        </h2>
-        <IngredientList
-          v-for="group in recipe.ingredientGroups"
-          :key="group.id"
-          :group="group"
-          :serving="serving"
-          :unit="unit"
-          @selected="selected"
-        />
-      </div>
+      <IngredientList
+        :ingredientGroups="recipe.ingredientGroups"
+        :serving="serving"
+      ></IngredientList>
       <Instructions :instructions="recipe.instructions"></Instructions>
+      <div class="reference" v-if="recipe.url">
+        Reference: <a :href="recipe.url">{{ recipe.url }}</a>
+      </div>
     </div>
   </div>
 </template>
@@ -61,61 +52,24 @@ export default {
   },
   data() {
     return {
-      ingredientsUnit: {
-        count: 0,
-        us: 0,
-      },
       serving: {
         original: 0,
         adjusted: 0,
       },
-      unit: 'US',
     }
   },
   computed: {
     recipe() {
       return this.$store.state.recipes.find(
-        recipe => recipe.id === Number(this.$route.params.id)
+        recipe => recipe.name === this.$route.params.name
       )
     },
   },
   mounted() {
-    const USUnits = ['tbsp', 'tsp', 'cup']
-    this.ingredientsUnit = this.recipe.ingredientGroups.reduce(
-      (accum, group) => {
-        group.ingredients
-          .filter(ingredient => !ingredient.optional)
-          .forEach(ingredient => {
-            accum.count++
-            if (USUnits.includes(ingredient.unit.toLowerCase())) {
-              accum.us++
-            }
-          })
-
-        return accum
-      },
-      { count: 0, us: 0 }
-    )
-
     this.serving.original = this.recipe.serving
     this.serving.adjusted = this.recipe.serving
-
-    if (this.ingredientsUnit.us / this.ingredientsUnit.count > 0.5) {
-      this.unit = 'US'
-    } else {
-      this.unit = 'metric'
-    }
   },
   methods: {
-    selected(event) {
-      if (!event.optional) {
-        if (event.value) {
-          this.ingredientsCount--
-        } else {
-          this.ingredientsCount++
-        }
-      }
-    },
     decrease() {
       if (this.serving.adjusted > 1) {
         this.serving.adjusted--
@@ -123,9 +77,6 @@ export default {
     },
     increase() {
       this.serving.adjusted++
-    },
-    toggleUnit() {
-      this.unit = this.unit === 'metric' ? 'US' : 'metric'
     },
   },
 }
@@ -206,43 +157,11 @@ export default {
       }
     }
 
-    .ingredients {
-      background: #efeff0;
-      padding: 24px;
+    .reference {
       text-align: left;
-      border-radius: 8px;
-      margin-bottom: 24px;
-
-      @media screen and (max-width: 392px) {
-        padding: 16px;
-        margin: 0 -16px 24px;
-      }
-
-      h2 {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0 0 12px;
-        text-transform: uppercase;
-
-        .unit {
-          font-size: 14px;
-          border: 1px solid #333;
-          padding: 4px 8px;
-          border-radius: 4px;
-          min-width: 60px;
-          text-transform: capitalize;
-
-          &:active {
-            background: #333;
-            color: white;
-          }
-        }
-      }
-
-      .count {
-        text-transform: capitalize;
-      }
+      margin-top: 36px;
+      margin-bottom: 48px;
+      font-style: italic;
     }
   }
 }

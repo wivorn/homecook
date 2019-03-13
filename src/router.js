@@ -12,7 +12,7 @@ export default new Router({
       component: Recipe,
     },
     {
-      path: '/recipe/:id',
+      path: '/recipe/:name',
       name: 'recipeDetail',
       component: () => import('./views/RecipeDetail.vue'),
     },

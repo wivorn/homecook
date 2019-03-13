@@ -1,8 +1,8 @@
 <template>
   <div :class="{ step: true, completed: checked }">
-    <div class="info">
+    <div class="info" @click="handleClick">
       <div class="index">{{ index + 1 }}.</div>
-      <div class="text" @click="handleClick">
+      <div class="text">
         {{ step.text }}
       </div>
     </div>
