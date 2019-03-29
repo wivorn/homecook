@@ -2,9 +2,12 @@
   <div id="app">
     <nav>
       <div class="container">
-        <router-link :to="{ path: '/' }">
-          <h1 class="logo">Home<span>Cook</span></h1>
-        </router-link>
+        <div class="back" @click="back" v-if="$route.name === 'recipeDetail'">
+          Back
+        </div>
+        <router-link class="logo" :to="{ path: '/' }"
+          >Home<span>Cook</span></router-link
+        >
       </div>
     </nav>
     <div class="page">
@@ -22,6 +25,9 @@ export default {
         document.body.classList.add('user-is-tabbing')
         window.removeEventListener('keydown', this.handleFirstTab)
       }
+    },
+    back() {
+      this.$router.go(-1)
     },
   },
   mounted() {
@@ -88,18 +94,33 @@ a:visited {
     z-index: 10;
     text-align: center;
     box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+    height: 64px;
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    .container {
+      display: grid;
+      grid-template-columns: 50px 1fr 50px;
+      grid-template-rows: 1fr;
+      align-items: center;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 100%;
+    }
+
+    .back {
+      display: inline-block;
+      cursor: pointer;
+      font-size: 20px;
     }
 
     .logo {
+      color: inherit;
+      text-decoration: none;
       margin: 0;
       font-size: 28px;
       letter-spacing: -1px;
       font-weight: normal;
+      grid-column: 2 / 3;
 
       span {
         font-weight: bold;

@@ -1,5 +1,6 @@
 <template>
   <div class="recipe-detail">
+    <div class="recipe-image" :style="{ backgroundImage: imageUrl }"></div>
     <div class="container">
       <h1 class="recipe-name">
         {{ recipe.name }}
@@ -64,6 +65,13 @@ export default {
         recipe => recipe.name === this.$route.params.name
       )
     },
+    imageUrl() {
+      if (this.recipe.image) {
+        return `url('` + require(`@/assets/${this.recipe.image}`) + `')`
+      } else {
+        return `url('` + require(`@/assets/placeholder.png`) + `')`
+      }
+    },
   },
   mounted() {
     this.serving.original = this.recipe.serving
@@ -84,6 +92,13 @@ export default {
 
 <style lang="scss">
 .recipe-detail {
+  .recipe-image {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+  }
+
   .container {
     border-radius: 8px;
     max-width: 800px;
