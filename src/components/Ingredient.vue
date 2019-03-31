@@ -14,8 +14,8 @@
             ingredient.name
           }}</a>
           <span v-else>{{ ingredient.name }}</span>
-          <span class="description" v-if="ingredient.description"
-            >({{ ingredient.description }})</span
+          <span class="description" v-if="ingredient.substitute"
+            >/ {{ ingredient.substitute.join(', ') }}</span
           >
           <span v-if="ingredient.optional"> – Optional</span>
         </span>

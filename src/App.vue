@@ -11,7 +11,9 @@
       </div>
     </nav>
     <div class="page">
-      <router-view />
+      <transition name="fade" mode="out-in">
+        <router-view />
+      </transition>
     </div>
   </div>
 </template>
@@ -39,6 +41,18 @@ export default {
 
 <style lang="scss">
 @import url('./styles/normalize.scss');
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.15s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
 
 *,
 *:before,
