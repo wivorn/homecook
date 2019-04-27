@@ -27,7 +27,7 @@ export default {
           name: 'Garlic',
         },
         {
-          quantity: 1,
+          quantity: 2,
           unit: 'Piece',
           name: 'Chili',
         },

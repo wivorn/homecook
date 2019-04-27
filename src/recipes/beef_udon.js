@@ -1,13 +1,11 @@
 export default {
-  name: 'Beef Udon',
-  altName: '肉うどん',
+  name: 'Beef Udon (肉うどん)',
   image: 'beef_udon.jpg',
   url: 'https://www.justonecookbook.com/beef-udon/',
   description: 'Quick and easy udon noodle soup',
   durations: {
     prepTime: 10,
     cookTime: 15,
-    totalTime: 25,
   },
   serving: 2,
   tags: ['Japanese', 'Noodle Soup'],
